@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="logo.png">
+    <title>Guess The Word Game</title>
+    <link rel="stylesheet" href="guess.css">
+</head>
+
+<body>
+    <h1 class="game-name"><img class="logo" src="logo.png" alt="Game Logo"></h1>
+    <div class="guess-container">
+        <div class="game-area">
+            <div class="input-feild">
+            </div>
+            <div class="control-buttons">
+                <button id="check-btn">Check Word</button>
+                <button id="hint-btn">Hint</button>
+            </div>
+        </div>
+        <div class="key-colors">
+            <h2>Key Color</h2>
+            <div class="key-color">
+                <div class="key inplace"></div>
+                <div class="key-text">Letter Is Right And In Place</div>
+            </div>
+            <div class="key-color">
+                <div class="key is-not-inplace"></div>
+                <div class="key-text">Letter Is Right But Not In Place</div>
+            </div>
+            <div class="key-color">
+                <div class="key incorrect"></div>
+                <div class="key-text">Letter Is Wrong And Not Exists In Word</div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <img class="logo" src="logo.png" alt="logo image">
+    </footer>
+    <script src="guess.js" defer></script>
+</body>
+
+</html>

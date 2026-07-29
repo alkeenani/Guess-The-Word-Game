@@ -1,0 +1,165 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #f44336;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background-color: #eee;
+}
+
+h1 {
+  text-align: center;
+  padding: 20px;
+  background-color: white;
+  margin: 0 0 50px;
+}
+
+.logo{
+  width: 100px;
+  height: auto;
+}
+.guess-container {
+  width: 1000px;
+  display: flex;
+  margin: 20px auto;
+  padding: 20px;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  .input-feild {
+    >div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: bold;
+
+      &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+      }
+
+      input {
+        text-align: center;
+        width: 60px;
+        height: 60px;
+        border-radius: 5px;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: white;
+        border: none;
+        border-bottom: 3px solid #333;
+
+        &:focus {
+          outline-color: #ccc;
+        }
+
+        &.yes-inplace {
+          background-color: #f89e13;
+          color: white;
+          border: #f89e13;
+        }
+
+        &.is-not-inplace {
+          background-color: #18ba89;
+          color: white;
+          border: #18ba89;
+        }
+
+        &.incorrect {
+          background-color: #27303f;
+          color: white;
+          border: #27303f;
+        }
+      }
+    }
+  }
+
+  .control-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    button {
+      border: none;
+      padding: 15px 20px;
+      border-radius: 6px;
+      font-size: 21px;
+      font-weight: bold;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      cursor: pointer;
+      transform: translateY(-2px);
+      opacity: 0.8;
+    }
+  }
+
+  #check-btn {
+    background-color: var(--primary-color);
+    flex: 1;
+  }
+
+  #hint-btn {
+    background-color: #009688;
+    width: fit-content;
+  }
+
+  .key-colors {
+    text-align: center;
+
+    .key-color {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      border-radius: 7px;
+      padding: 10px 20px;
+      margin-bottom: 10px;
+
+      .key {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+
+        &.inplace {
+          background-color: #f89e13;
+        }
+
+        &.is-not-inplace {
+          background-color: #18ba89;
+        }
+
+        &.incorrect {
+          background-color: #27303f;
+        }
+      }
+
+      .key-text {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 20px;
+  color: white;
+  background-color: #27303f;
+  text-align: center;
+  width: 100%;
+}
