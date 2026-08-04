@@ -1,3 +1,5 @@
+import { showPopUp } from "./popup.js";
+
 //?  Create Game Settings
 let gameName = "Guess The Word";
 document.querySelector(".game-name").textContent = gameName;
@@ -117,8 +119,13 @@ function checkInput() {
       sucsseGuess = false;
     }
   }
+  //? popup message if the user guessed the word correctly
+  if (sucsseGuess) {
+    showPopUp("Congratulations 🎉", "You guessed the word correctly.");
+  }
 }
 
+//? Call the inputFeild function when the window loads
 window.onload = function () {
   inputFeild();
 };
