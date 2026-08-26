@@ -1,19 +1,19 @@
 import { showPopUp } from "./popup.js";
 
-//?  Create Game Settings
-let gameName = "Guess The Word";
+//? Create Game Settings
+const gameName = "Guess The Word";
+
 document.querySelector(".game-name").textContent = gameName;
 document.querySelector("footer").textContent =
   `${gameName} Game Created By Mohamed Alkenani`;
 
-//? Setting Game Options
-
-let numbersOfTries = 6;
-let numbersOfLetters = 6;
+//? Game Options
+const numbersOfTries = 6;
+const numbersOfLetters = 6;
 let currentTry = 1;
 let numberOfHints = 2;
-let wordToGuess = "";
-let wordList = [
+
+const wordList = [
   "Family",
   "Doctor",
   "Animal",
@@ -30,64 +30,71 @@ let wordList = [
   "Singer",
   "Dancer",
 ];
-wordToGuess =
+
+const wordToGuess =
   wordList[Math.floor(Math.random() * wordList.length)].toLowerCase();
+console.log(wordToGuess);
+// console.log(wordToGuess);
 
-//? Check if all words in the wordList are 6 letters
-// for(let i =1 ; i < wordList.length; i++){
-//    if(wordList[i].length===6){
-//     console.log(`${i} - ${wordList[i]}`);
-//    }
-//    else{
-//     console.log(wordList[i] + " is not 6 letters");
-//    }
-// }
+//? Create Game Input Field
 
-//? Create Game Input Feild
+function inputField() {
+  const inputFieldContainer = document.querySelector(".input-feild");
 
-function inputFeild() {
   for (let i = 1; i <= numbersOfTries; i++) {
-    let TryDiv = document.createElement("div");
-    TryDiv.classList.add(`try-${i}`);
-    TryDiv.textContent = `Try ${i}`;
-    document.querySelector(".input-feild").appendChild(TryDiv);
+    const tryDiv = document.createElement("div");
+    tryDiv.classList.add(`try-${i}`);
+    tryDiv.textContent = `Try ${i}`;
+
+    inputFieldContainer.appendChild(tryDiv);
+
     for (let j = 1; j <= numbersOfLetters; j++) {
-      let input = document.createElement("input");
-      input.setAttribute("type", "text");
-      input.setAttribute("maxlength", "1");
+      const input = document.createElement("input");
+
+      input.type = "text";
+      input.maxLength = 1;
+
       input.classList.add(`try-${i}-letter-${j}`);
-      TryDiv.appendChild(input);
+
+      tryDiv.appendChild(input);
     }
-    if (i !== 1) TryDiv.classList.add("disabled");
+
+    if (i !== 1) {
+      tryDiv.classList.add("disabled");
+    }
   }
-  document.querySelector(".input-feild").children[0].children[0].focus();
 
-  //? Disable All Inputs Except The First Try
-  let inputsDis = document.querySelectorAll(".disabled input");
-  inputsDis.forEach((input) => (input.disabled = true));
+  inputFieldContainer.children[0].children[0].focus();
 
-  //? Input value is captial letter only
-  let inputs = document.querySelectorAll(".input-feild input");
+  document.querySelectorAll(".disabled input").forEach((input) => {
+    input.disabled = true;
+  });
+
+  const inputs = document.querySelectorAll(".input-feild input");
 
   inputs.forEach((input, index) => {
     input.addEventListener("input", function () {
       this.value = this.value.toUpperCase();
+
       const nextInput = inputs[index + 1];
+
       if (nextInput) nextInput.focus();
     });
 
     input.addEventListener("keydown", function (event) {
-      // console.log(event)
-      const crruntinput = Array.from(inputs).indexOf(event.target); // or this
-      // console.log(crruntinput)
+      const currentInput = Array.from(inputs).indexOf(event.target);
+
       if (event.key === "ArrowRight") {
-        const nextInput = crruntinput + 1;
+        const nextInput = currentInput + 1;
+
         if (nextInput < inputs.length) {
           inputs[nextInput].focus();
         }
       }
+
       if (event.key === "ArrowLeft") {
-        const prevInput = crruntinput - 1;
+        const prevInput = currentInput - 1;
+
         if (prevInput >= 0) {
           inputs[prevInput].focus();
         }
@@ -96,36 +103,143 @@ function inputFeild() {
   });
 }
 
-//? logic to check the input value and compare it with the wordList
+//? Check Guess
 
-let gussword = document.querySelector("#check-btn");
-gussword.addEventListener("click", checkInput);
+const guessWordBtn = document.querySelector("#check-btn");
 
-console.log(wordToGuess);
+guessWordBtn.addEventListener("click", checkInput);
 
 function checkInput() {
-  let sucsseGuess = true;
+  let successGuess = true;
+
+  const currentRow = document.querySelector(`.try-${currentTry}`);
+
   for (let i = 1; i <= numbersOfLetters; i++) {
-    let inputValue = document.querySelector(`.try-${currentTry}-letter-${i}`);
-    let letter = inputValue.value.toLowerCase();
-    let letterToGuess = wordToGuess[i - 1].toLowerCase();
+    const input = document.querySelector(`.try-${currentTry}-letter-${i}`);
+
+    input.classList.remove("yes-inplace", "is-not-inplace", "incorrect");
+
+    const letter = input.value.toLowerCase();
+
+    // if (!letter) {
+    //   showPopUp("Warning", "Please Fill All Inputs");
+    //   return;
+    // }
+
+    const letterToGuess = wordToGuess[i - 1];
+
     if (letter === letterToGuess) {
-      inputValue.classList.add("yes-inplace");
+      input.classList.add("yes-inplace");
     } else if (wordToGuess.includes(letter) && letter !== "") {
-      inputValue.classList.add("is-not-inplace");
-      sucsseGuess = false;
-    } else {
-      inputValue.classList.add("incorrect");
-      sucsseGuess = false;
+      input.classList.add("is-not-inplace");
+      successGuess = false;
+    } else if (wordToGuess) {
+      input.classList.add("incorrect");
+      successGuess = false;
     }
   }
-  //? popup message if the user guessed the word correctly
-  if (sucsseGuess) {
-    showPopUp("Congratulations 🎉", "You guessed the word correctly.");
+
+  if (successGuess) {
+    showPopUp(
+      "Congratulations 🎉",
+      `You Win! The Word [${
+        wordToGuess[0].toUpperCase() + wordToGuess.slice(1)
+      }] Is Correct.`,
+    );
+
+    document.querySelectorAll(".input-feild input").forEach((input) => {
+      input.disabled = true;
+    });
+
+    guessWordBtn.disabled = true;
+
+    return;
+  }
+
+  currentRow.classList.add("disabled-inputs");
+
+  currentRow.querySelectorAll("input").forEach((input) => {
+    input.disabled = true;
+  });
+
+  if (currentTry < numbersOfTries) {
+    currentTry++;
+
+    const nextRow = document.querySelector(`.try-${currentTry}`);
+
+    nextRow.classList.remove("disabled");
+
+    nextRow.querySelectorAll("input").forEach((input) => {
+      input.disabled = false;
+    });
+
+    nextRow.querySelector("input").focus();
+  } else {
+    showPopUp("Game Over", `The Correct Word Was: ${wordToGuess}`);
+
+    guessWordBtn.disabled = true;
   }
 }
+addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    checkInput();
+  }
+});
 
-//? Call the inputFeild function when the window loads
+//?  Hint Feature
+
+let hintBtn = document.querySelector("#hint-btn");
+let hintCount = document.querySelector("#hint-btn span");
+hintCount.innerHTML = numberOfHints;
+hintBtn.addEventListener("click", gitHint);
+// console.log(Math.floor(Math.random() * numbersOfLetters));
+function gitHint() {
+  if (numberOfHints > 0) {
+    numberOfHints--;
+    hintCount.innerHTML = numberOfHints;
+    // const randomIndex = Math.floor(Math.random() * numbersOfLetters);
+
+    // const hintLetter = wordToGuess[randomIndex].toUpperCase();
+    // showPopUp("Hint", `The Hint Is: ${hintLetter}`);
+    if (numberOfHints === 0) {
+      hintBtn.disabled = true;
+    }
+    const enabledInputs = document.querySelectorAll(`input:not(:disabled)`);
+    // console.log(enabledInputs);
+    const emptyInputs = Array.from(enabledInputs).filter(
+      (input) => input.value === "",
+    );
+    if (emptyInputs.length > 0) {
+      let randomindex = Math.floor(Math.random() * emptyInputs.length);
+      let randomInput = emptyInputs[randomindex];
+      let InputToFill = Array.from(enabledInputs).indexOf(randomInput);
+      randomInput.value = wordToGuess[InputToFill].toUpperCase();
+      // console.log(randomindex);
+      // console.log(randomInput);
+    }
+  }
+}
+//? Delate Input Value On Backspace Key Press
+function Backspace(event) {
+  if (event.key === "Backspace") {
+    const inputs = document.querySelectorAll("input:not([disabled])");
+    const currentInput = document.activeElement;
+    const currentIndex = Array.from(inputs).indexOf(currentInput);
+
+    if (currentIndex === -1) return;
+
+    if (currentInput.value !== "") {
+      currentInput.value = "";
+    } else if (currentIndex > 0) {
+      const prevInput = inputs[currentIndex - 1];
+      prevInput.value = "";
+      prevInput.focus();
+    }
+  }
+}
+addEventListener("keydown", Backspace);
+
+//? Start Game
 window.onload = function () {
-  inputFeild();
+  inputField();
 };
