@@ -10,156 +10,359 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   background-color: #eee;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+/* ================= HEADER ================= */
 
 h1 {
   text-align: center;
   padding: 20px;
   background-color: white;
-  margin: 0 0 50px;
+  margin: 0 0 30px;
 }
 
-.logo{
-  width: 100px;
-  height: auto;
-}
+/* ================= GAME CONTAINER ================= */
+
 .guess-container {
-  width: 1000px;
+  width: min(1000px, 95%);
   display: flex;
   margin: 20px auto;
   padding: 20px;
   align-items: flex-start;
   justify-content: space-between;
+  gap: 30px;
+  flex: 1;
+}
+
+.input-feild {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ================= TRY ROW ================= */
+
+.input-feild > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: clamp(4px, 1vw, 10px);
+
+  margin-bottom: 20px;
+
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: bold;
+
+  width: 100%;
+}
+
+.input-feild > div.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ================= INPUTS ================= */
+
+.input-feild input {
+  text-align: center;
+
+  /*
+    بدل width ثابت 60px
+    الخانات هتصغر وتكبر حسب المساحة الموجودة
+  */
+  width: clamp(30px, 6vw, 60px);
+  height: clamp(30px, 6vw, 60px);
+
+  min-width: 0;
+
+  border-radius: 5px;
+
+  font-size: clamp(16px, 2.5vw, 24px);
+  font-weight: bold;
+
+  background-color: white;
+
+  border: none;
+  border-bottom: 3px solid #333;
+
+  padding: 0;
+}
+
+.input-feild input:focus {
+  outline-color: #ccc;
+}
+
+/* ================= INPUT COLORS ================= */
+
+.input-feild input.yes-inplace {
+  background-color: #f89e13;
+  color: white;
+  border: 3px solid #f89e13;
+}
+
+.input-feild input.is-not-inplace {
+  background-color: #18ba89;
+  color: white;
+  border: 3px solid #18ba89;
+}
+
+.input-feild input.incorrect {
+  background-color: #27303f;
+  color: white;
+  border: 3px solid #27303f;
+}
+
+/* ================= CONTROL BUTTONS ================= */
+
+.control-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  width: 100%;
+}
+
+.control-buttons button {
+  border: none;
+
+  padding: 15px 20px;
+
+  border-radius: 6px;
+
+  font-size: 21px;
+  font-weight: bold;
+
+  color: white;
+
+  transition: all 0.3s ease;
+}
+
+.control-buttons button:hover {
+  cursor: pointer;
+  transform: translateY(-2px);
+  opacity: 0.8;
+}
+
+.control-buttons button:disabled {
+  background-color: black !important;
+  opacity: 0.4;
+  cursor: no-drop;
+}
+
+#check-btn {
+  background-color: var(--primary-color);
+  flex: 1;
+  min-width: 0;
+}
+
+#hint-btn {
+  background-color: #009688;
+  width: fit-content;
+}
+
+/* ================= KEY COLORS ================= */
+
+.key-colors {
+  text-align: center;
+  flex-shrink: 0;
+  width: 390px;
+}
+
+.key-color {
+  display: flex;
+  align-items: center;
+
+  background-color: white;
+
+  border-radius: 7px;
+
+  padding: 10px 20px;
+
+  margin-bottom: 10px;
+}
+
+.key {
+  width: 30px;
+  height: 30px;
+
+  margin-right: 10px;
+
+  flex-shrink: 0;
+}
+
+.key.inplace {
+  background-color: #f89e13;
+}
+
+.key.is-not-inplace {
+  background-color: #18ba89;
+}
+
+.key.incorrect {
+  background-color: #27303f;
+}
+
+.key-text {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+  position: static;
+
+  width: 100%;
+
+  padding: 15px 20px;
+
+  color: white;
+
+  background-color: #27303f;
+
+  text-align: center;
+
+  margin-top: auto;
+}
+
+/* ================================================= */
+/*                  TABLET                          */
+/* ================================================= */
+
+@media (max-width: 900px) {
+  .guess-container {
+    flex-direction: column;
+    align-items: center;
+
+    width: min(700px, 95%);
+  }
 
   .input-feild {
-    >div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      font-size: 22px;
-      font-weight: bold;
-
-      &.disabled {
-        pointer-events: none;
-        opacity: 0.5;
-      }
-
-      input {
-        text-align: center;
-        width: 60px;
-        height: 60px;
-        border-radius: 5px;
-        font-size: 24px;
-        font-weight: bold;
-        background-color: white;
-        border: none;
-        border-bottom: 3px solid #333;
-
-        &:focus {
-          outline-color: #ccc;
-        }
-
-        &.yes-inplace {
-          background-color: #f89e13;
-          color: white;
-          border: #f89e13;
-        }
-
-        &.is-not-inplace {
-          background-color: #18ba89;
-          color: white;
-          border: #18ba89;
-        }
-
-        &.incorrect {
-          background-color: #27303f;
-          color: white;
-          border: #27303f;
-        }
-      }
-    }
-  }
-
-  .control-buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    button {
-      border: none;
-      padding: 15px 20px;
-      border-radius: 6px;
-      font-size: 21px;
-      font-weight: bold;
-      color: white;
-      transition: all 0.3s ease;
-    }
-
-    button:hover {
-      cursor: pointer;
-      transform: translateY(-2px);
-      opacity: 0.8;
-    }
-  }
-
-  #check-btn {
-    background-color: var(--primary-color);
-    flex: 1;
-  }
-
-  #hint-btn {
-    background-color: #009688;
-    width: fit-content;
+    width: 100%;
   }
 
   .key-colors {
-    text-align: center;
-
-    .key-color {
-      display: flex;
-      align-items: center;
-      background-color: white;
-      border-radius: 7px;
-      padding: 10px 20px;
-      margin-bottom: 10px;
-
-      .key {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-
-        &.inplace {
-          background-color: #f89e13;
-        }
-
-        &.is-not-inplace {
-          background-color: #18ba89;
-        }
-
-        &.incorrect {
-          background-color: #27303f;
-        }
-      }
-
-      .key-text {
-        font-size: 20px;
-        font-weight: bold;
-      }
-    }
+    width: 100%;
+    max-width: 600px;
   }
 }
 
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  padding: 20px;
-  color: white;
-  background-color: #27303f;
-  text-align: center;
-  width: 100%;
+/* ================================================= */
+/*                  MOBILE                          */
+/* ================================================= */
+
+@media (max-width: 600px) {
+  h1 {
+    margin-bottom: 10px;
+    padding: 15px;
+
+    font-size: 24px;
+  }
+
+  .guess-container {
+    width: 100%;
+
+    padding: 10px;
+
+    margin: 10px auto;
+
+    gap: 20px;
+  }
+
+  .input-feild > div {
+    gap: 4px;
+
+    margin-bottom: 15px;
+
+    font-size: 16px;
+  }
+
+  .input-feild input {
+    /*
+      مهم:
+      حجم الخانة يتناسب مع حجم الشاشة
+      ومش هيخرج بره الشاشة
+    */
+    width: clamp(28px, 10vw, 45px);
+    height: clamp(28px, 10vw, 45px);
+
+    font-size: clamp(15px, 4vw, 20px);
+  }
+
+  .control-buttons {
+    width: 100%;
+  }
+
+  .control-buttons button {
+    width: 100%;
+
+    font-size: 18px;
+  }
+
+  #check-btn {
+    width: 100%;
+  }
+
+  #hint-btn {
+    width: 100%;
+  }
+
+  .key-colors {
+    width: 100%;
+  }
+
+  .key-color {
+    padding: 10px;
+  }
+
+  .key-text {
+    font-size: 16px;
+  }
+
+  footer {
+    position: static;
+
+    margin-top: 20px;
+
+    padding: 15px 10px;
+
+    font-size: 14px;
+  }
+}
+
+/* ================================================= */
+/*              VERY SMALL SCREENS                 */
+/* ================================================= */
+
+@media (max-width: 350px) {
+  .guess-container {
+    padding: 5px;
+  }
+
+  .input-feild > div {
+    gap: 2px;
+
+    font-size: 14px;
+  }
+
+  .input-feild input {
+    width: clamp(25px, 9vw, 38px);
+    height: clamp(25px, 9vw, 38px);
+
+    font-size: 16px;
+  }
+
+  .key-text {
+    font-size: 14px;
+  }
+
+  .key {
+    width: 25px;
+    height: 25px;
+  }
 }
