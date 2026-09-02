@@ -13,28 +13,131 @@ const numbersOfLetters = 6;
 let currentTry = 1;
 let numberOfHints = 2;
 
-const wordList = [
-  "Family",
-  "Doctor",
-  "Animal",
-  "Nature",
-  "School",
-  "Person",
-  "Friend",
-  "Mother",
-  "Father",
-  "Sister",
-  "Player",
-  "Artist",
-  "Writer",
-  "Singer",
-  "Dancer",
-];
+const wordCategories = {
+  food: [
+    "Burger",
+    "Cheese",
+    "Potato",
+    "Tomato",
+    "Cookie",
+    "Orange",
+    "Banana",
+    "Coffee",
+  ],
 
-const wordToGuess =
-  wordList[Math.floor(Math.random() * wordList.length)].toLowerCase();
-console.log(wordToGuess);
-// console.log(wordToGuess);
+  animals: [
+    "Monkey",
+    "Rabbit",
+    "Turtle",
+    "Parrot",
+    "Giraffe",
+    "Kitten",
+    "Pigeon",
+    "Donkey",
+  ],
+
+  names: [
+    "Daniel",
+    "Samuel",
+    "George",
+    "Michael",
+    "Robert",
+    "Thomas",
+    "Andrew",
+    "Joseph",
+  ],
+
+  activities: [
+    "Soccer",
+    "Tennis",
+    "Boxing",
+    "Racing",
+    "Runner",
+    "Fitness",
+    "Diving",
+    "Skiing",
+  ],
+
+  nature: [
+    "Forest",
+    "Flower",
+    "Planet",
+    "Ocean",
+    "Island",
+    "Desert",
+    "Winter",
+    "Summer",
+    "Spring",
+  ],
+
+  places: [
+    "Market",
+    "School",
+    "Airport",
+    "Castle",
+    "Bridge",
+    "Garden",
+    "Street",
+    "Office",
+    "Museum",
+    "Church",
+  ],
+
+  technology: [
+    "Laptop",
+    "Camera",
+    "Mobile",
+    "Screen",
+    "Printer",
+    "Rocket",
+    "Engine",
+    "Bottle",
+    "Wallet",
+    "Pencil",
+  ],
+
+  adjectives: [
+    "Happy",
+    "Angry",
+    "Funny",
+    "Strong",
+    "Brave",
+    "Clever",
+    "Pretty",
+    "Lovely",
+    "Honest",
+    "Simple",
+  ],
+};
+
+let categoryBox = document.querySelector(".categoryBox");
+let Selection = document.querySelector("#wordCategories");
+
+let wordToGuess = "";
+let WordGrt = "";
+
+Selection.addEventListener("change", function (e) {
+  WordGrt = e.target.value;
+
+  const words = wordCategories[WordGrt];
+
+  wordToGuess = words[Math.floor(Math.random() * words.length)].toLowerCase();
+
+  console.log("Category:", WordGrt);
+  console.log("Word:", wordToGuess);
+
+  Selection.style.display = "none";
+  categoryBox.classList.add("Disbald");
+  //? Start New Game
+  if (categoryBox.classList.contains("Disbald")) {
+    let NewGame = document.createElement("button");
+    NewGame.textContent = "New Game";
+    categoryBox.appendChild(NewGame);
+    NewGame.addEventListener("click", function () {
+      window.location.reload();
+    });
+  }
+});
 
 //? Create Game Input Field
 
@@ -110,6 +213,10 @@ const guessWordBtn = document.querySelector("#check-btn");
 guessWordBtn.addEventListener("click", checkInput);
 
 function checkInput() {
+  if (!wordToGuess) {
+    showPopUp("Warning", "Please Choose A Category First");
+    return;
+  }
   let successGuess = true;
 
   const currentRow = document.querySelector(`.try-${currentTry}`);
@@ -120,11 +227,6 @@ function checkInput() {
     input.classList.remove("yes-inplace", "is-not-inplace", "incorrect");
 
     const letter = input.value.toLowerCase();
-
-    // if (!letter) {
-    //   showPopUp("Warning", "Please Fill All Inputs");
-    //   return;
-    // }
 
     const letterToGuess = wordToGuess[i - 1];
 
@@ -192,20 +294,19 @@ let hintBtn = document.querySelector("#hint-btn");
 let hintCount = document.querySelector("#hint-btn span");
 hintCount.innerHTML = numberOfHints;
 hintBtn.addEventListener("click", gitHint);
-// console.log(Math.floor(Math.random() * numbersOfLetters));
 function gitHint() {
+  if (!wordToGuess) {
+    showPopUp("Warning", "Please Choose A Category First");
+    return;
+  }
   if (numberOfHints > 0) {
     numberOfHints--;
     hintCount.innerHTML = numberOfHints;
-    // const randomIndex = Math.floor(Math.random() * numbersOfLetters);
 
-    // const hintLetter = wordToGuess[randomIndex].toUpperCase();
-    // showPopUp("Hint", `The Hint Is: ${hintLetter}`);
     if (numberOfHints === 0) {
       hintBtn.disabled = true;
     }
     const enabledInputs = document.querySelectorAll(`input:not(:disabled)`);
-    // console.log(enabledInputs);
     const emptyInputs = Array.from(enabledInputs).filter(
       (input) => input.value === "",
     );
@@ -214,12 +315,11 @@ function gitHint() {
       let randomInput = emptyInputs[randomindex];
       let InputToFill = Array.from(enabledInputs).indexOf(randomInput);
       randomInput.value = wordToGuess[InputToFill].toUpperCase();
-      // console.log(randomindex);
-      // console.log(randomInput);
     }
   }
 }
 //? Delate Input Value On Backspace Key Press
+
 function Backspace(event) {
   if (event.key === "Backspace") {
     const inputs = document.querySelectorAll("input:not([disabled])");
