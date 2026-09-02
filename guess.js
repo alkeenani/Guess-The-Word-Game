@@ -123,9 +123,6 @@ Selection.addEventListener("change", function (e) {
 
   wordToGuess = words[Math.floor(Math.random() * words.length)].toLowerCase();
 
-  console.log("Category:", WordGrt);
-  console.log("Word:", wordToGuess);
-
   Selection.style.display = "none";
   categoryBox.classList.add("Disbald");
   //? Start New Game
